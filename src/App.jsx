@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { Provider } from "react-redux";
+import Body from "./components/Body";
+import appStore from "./utils/appStore";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <h1 className='bg-amber-700'>hii</h1>
-  )
+    <Provider store={appStore}>
+      <Body />
+    </Provider>
+  );
 }
 
-export default App
+export default App;
