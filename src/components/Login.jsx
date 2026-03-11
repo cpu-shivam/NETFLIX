@@ -40,7 +40,6 @@ const Login = () => {
           })
           .then(() => {
             dispatch(addUser({ displayName: user.displayName, email: user.email }));
-            navigate("/Browse");
             // Profile updated!
             // ...
           })

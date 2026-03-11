@@ -1,23 +1,21 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const navigate = useNavigate();
   const user = useSelector((store) => store.user);
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        navigate("/");
+   
       })
       .catch((error) => {
         // An error happened.
       });
   };
   return (
-    <div className="absolute bg-linear-to-b from-black flex justify-between">
+    <div className={!user?"absolute bg-linear-to-b from-black flex justify-between":" absolute flex justify-between z-20"}>
       <div className="w-2/12">
         <img
           className=" px-4  ml-10"
@@ -29,7 +27,7 @@ const Header = () => {
         <div className="p-4 m-4">
           <button
             onClick={handleSignOut}
-            className="bg-red-700 p-1 rounded-md text-white"
+            className="bg-red-700 p-1 rounded-md text-white hover:bg-amber-400 "
           >
             Sign Out
           </button>
