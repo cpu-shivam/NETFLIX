@@ -17,13 +17,11 @@ const Body = () => {
       if (user) {
         //sign in or sign up
         const { displayName, email } = user;
-        // console.log(email);
         dispatch(addUser({ displayName: displayName, email: email }));
         navigate("/Browse");
         // ...
       } else {
         // User is signed out
-        //console.log(user);
         dispatch(removeUser());
         navigate("/");
       }

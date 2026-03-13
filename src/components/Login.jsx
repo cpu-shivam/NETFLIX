@@ -10,6 +10,7 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
+import { DEFAULT_BACKGROUND } from "../utils/constants";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Login = () => {
   const password = useRef(null);
   const handleSubmit = () => {
     const message = validateLogin(email.current.value, password.current.value);
-    //console.log(email.current.value);
+
     seterrMessage(message);
     if (message) return;
 
@@ -45,8 +46,6 @@ const Login = () => {
           })
           .catch((error) => {
             // An error occurred
-            // ...
-            console.log(error)
           });
           //console.log(user);
           // ...
@@ -67,7 +66,7 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        //console.log(user);
+
         navigate("/Browse");
         
           // ...
@@ -127,7 +126,7 @@ const Login = () => {
       </form>
       <img
         alt="wallpaper"
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/75772f65-58b5-465f-b642-fa858b6168ca/web/IN-en-20260302-TRIFECTA-perspective_26418256-c5f3-4e9a-8160-a6b534228a2f_large.jpg"
+        src={DEFAULT_BACKGROUND}
       ></img>
     </div>
   );

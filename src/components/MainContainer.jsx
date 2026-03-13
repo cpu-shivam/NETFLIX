@@ -6,10 +6,10 @@ import HeadVideo from "./HeadVideo";
 const MainContainer = () => {
   const movie = useSelector((store) => store.movies.dhurandhar);
   if (!movie) return;
-  console.log(movie)
+  .log(movie)
   const { id, original_title, overview } = movie[0];
   return (
-    <div>
+    <div className="">
       <HeadTitle title={original_title} overview={overview} />
       <HeadVideo id={id}/>
     </div>  

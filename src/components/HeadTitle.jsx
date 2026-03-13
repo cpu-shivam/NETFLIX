@@ -6,10 +6,10 @@ const HeadTitle = ({ title, overview }) => {
       <div className="font-bold text-5xl my-7">{title}</div>
       <div className="w-4/12">{overview}</div>
       <div className="py-7">
-        <button className="bg-white text-black py-2 px-7 text-xl hover:bg-zinc-300 hover:cursor-pointer  rounded-md font-bold">
+        <button className="bg-white text-black py-2 px-7 text-lg hover:bg-zinc-300 hover:cursor-pointer  rounded-md font-bold">
           ▶︎ Play
         </button>
-        <button className="bg-zinc-500/55 hover:bg-zinc-500/35 hover:cursor-pointer ml-3 py-2 px-8 text-xl  rounded-md  font-bold text-white">
+        <button className="bg-zinc-500/55 hover:bg-zinc-500/35 hover:cursor-pointer ml-3 py-2 px-8 text-lg  rounded-md  font-bold text-white">
           ⓘ More info
         </button>
       </div>
