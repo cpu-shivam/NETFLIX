@@ -6,6 +6,15 @@ const moviesSlice = createSlice({
     Popular: null,
     trailer: null,
     searchMovies: null,
+    TrendingMovies: null,
+    TrendingShows: null,
+    TopRatedMovies: null,
+    NowPlayingMovies: null,
+    TVSeries: null,
+    HorrorMovies: null,
+    trailer: null,
+    movieGenre: null,
+    tvGenre: null,
     dhurandhar: [
       {
         adult: false,
@@ -55,6 +64,12 @@ const moviesSlice = createSlice({
     addsearchMovies: (state, action) => {
       state.searchMovies = action.payload;
     },
+    addtvGenre: (state, action) => {
+      state.tvGenre = action.payload;
+    },
+    addmovieGenre: (state, action) => {
+      state.movieGenre = action.payload;
+    },
   },
 });
 export const {
@@ -67,6 +82,8 @@ export const {
   addTopRatedMovies,
   addTrailer,
   addsearchMovies,
+  addtvGenre,
+  addmovieGenre,
 } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

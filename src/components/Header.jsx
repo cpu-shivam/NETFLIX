@@ -7,9 +7,15 @@ import { changeLanguage } from "../utils/configSlice";
 import { useRef } from "react";
 import { addsearchMovies } from "../utils/moviesSlice";
 import { Link } from "react-router-dom";
+import useGenreList from "../hooks/useGenreList";
+import Select from "react-select/base";
 
 const Header = () => {
   const user = useSelector((store) => store.user);
+  useGenreList();
+  const movieGenre = useSelector((store) => store.movies.movieGenre);
+  const tvGenre = useSelector((store) => store.movies.tvGenre);
+  console.log(movieGenre);
   const movieSearch = useRef(null);
   const showGptPage = useSelector((store) => store.gptSearch.showGptSearch);
   const dispatch = useDispatch();
@@ -55,10 +61,22 @@ const Header = () => {
       {user && (
         <>
           <div className=" flex justify-between w-full  items-center">
-            <div className="text-white ">
+            <div className="text-white flex gap-x-10">
               <Link to="/browse">
                 <span>Home</span>
               </Link>
+              <select className="bg-black hover:cursor-pointer">
+                <option disabled>Movie Genres</option>
+                {movieGenre.map((each) => (
+                  <option key={each.id}>{each.name}</option>
+                ))}
+              </select>
+              <select className="bg-black hover:cursor-pointer">
+                <option disabled>Shows Genres</option>
+                {tvGenre.map((each) => (
+                  <option key={each.id}>{each.name}</option>
+                ))}
+              </select>
             </div>
             <div className="p-4 mx-4">
               {showGptPage && (

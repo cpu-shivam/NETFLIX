@@ -7,7 +7,6 @@ import { auth } from "../utils/firebase";
 import { Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
-import useOnlineStatus from "../hooks/useonlineStatus";
 import OnlineStatusBanner from "./OnlineStatusBanner";
 import SearchMovies from "./searchMovies";
 

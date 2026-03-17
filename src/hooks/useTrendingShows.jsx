@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux';
-import { options } from '../utils/constants';
-import { addTrendingShows } from '../utils/moviesSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { options } from "../utils/constants";
+import { addTrendingShows } from "../utils/moviesSlice";
 
 const useTrendingShows = () => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const isTrending = useSelector((store) => store.movies.TrendingShows);
+
   useEffect(() => {
-    fetchMovies();
+    !isTrending && fetchMovies();
   }, []);
 
   const fetchMovies = async () => {
@@ -17,6 +19,6 @@ const useTrendingShows = () => {
     const json = await movieList.json();
     dispatch(addTrendingShows(json.results));
   };
-}
+};
 
-export default useTrendingShows
+export default useTrendingShows;

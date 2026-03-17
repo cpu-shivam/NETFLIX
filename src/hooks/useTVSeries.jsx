@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { options } from "../utils/constants";
 import { addTVSeries } from "../utils/moviesSlice";
 
 const useTVSeries = () => {
   const dispatch = useDispatch();
+  const isTvSeries = useSelector((store) => store.movies.TVSeries);
   useEffect(() => {
-    fetchMovies();
+    !isTvSeries && fetchMovies();
   }, []);
 
   const fetchMovies = async () => {
