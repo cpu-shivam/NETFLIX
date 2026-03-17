@@ -4,16 +4,19 @@ import Browse from "./Browse";
 import Error from "./Error";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
+import useOnlineStatus from "../hooks/useonlineStatus";
+import OnlineStatusBanner from "./OnlineStatusBanner";
+import SearchMovies from "./searchMovies";
 
 const Body = () => {
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe= onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         //sign in or sign up
         const { displayName, email } = user;
@@ -26,11 +29,12 @@ const Body = () => {
         navigate("/");
       }
     });
-     return () => unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   return (
     <div>
+      <OnlineStatusBanner />
       <Outlet />
     </div>
   );
@@ -47,6 +51,14 @@ export const appRouter = createBrowserRouter([
       {
         path: "/Browse",
         element: <Browse />,
+      },
+      {
+        path: "/search",
+        element: (
+          <Suspense>
+            <SearchMovies />
+          </Suspense>
+        ),
       },
     ],
     errorElement: <Error />,

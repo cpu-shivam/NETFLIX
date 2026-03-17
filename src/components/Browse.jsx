@@ -10,9 +10,12 @@ import useTVSeries from "../hooks/useTVSeries";
 import useTopRated from "../hooks/useTopRated";
 import GptSearch from "./GptSearch";
 import { useSelector } from "react-redux";
+import MovieBars from "./movieBars";
+import SearchMovies from "./searchMovies";
 
 const Browse = () => {
   const showGptPage = useSelector((store) => store.gptSearch.showGptSearch);
+  const searchMoviesList = useSelector((store) => store.movies.searchMovies);
   usePopularAPI();
   useTrendingMoviesAPI();
   useTrendingShows();
@@ -24,14 +27,19 @@ const Browse = () => {
   return (
     <div>
       <Header />
-      {showGptPage ? (
+      {/* {showGptPage ? (
         <GptSearch />
       ) : (
         <>
           <MainContainer />
           <SecondaryContainer />
         </>
-      )}
+      )} */}
+   
+          <MainContainer />
+          <SecondaryContainer />
+   
+
     </div>
   );
 };

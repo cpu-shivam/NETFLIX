@@ -2,6 +2,7 @@ const lang = {
   english: {
     search: "Search",
     gptPlaceHolder: "what would you like to watch today",
+    //browsePlaceHolder:
   },
   hindi: {
     search: "खोज",
