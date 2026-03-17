@@ -12,8 +12,7 @@ export const options = {
   },
 };
 
-export const GPT_KEY =
-  "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";
+
 
 export const SUPPORTED_LANG = [
   { identifier: "english", name: "English" },
