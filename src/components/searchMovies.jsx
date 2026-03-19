@@ -2,10 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import MovieCard from "./MovieCard";
 import Header from "./Header";
+import Shimmer from "./Shimmer";
 
 const SearchMovies = () => {
   const movies = useSelector((store) => store.movies.searchMovies);
-  if (movies == null) return;
+  if (movies == null) return(<Shimmer/>);
   return (
     <>
       <Header />

@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 import OnlineStatusBanner from "./OnlineStatusBanner";
 import SearchMovies from "./searchMovies";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
   const dispatch = useDispatch();

@@ -10,6 +10,7 @@ import useTVSeries from "../hooks/useTVSeries";
 import useTopRated from "../hooks/useTopRated";
 
 import { useSelector } from "react-redux";
+import useGenreList from "../hooks/useGenreList";
 
 
 const Browse = () => {
@@ -21,6 +22,7 @@ const Browse = () => {
   useHorror();
   useTVSeries();
   useTopRated();
+    useGenreList();
 
   return (
     <div>

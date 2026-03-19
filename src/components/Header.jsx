@@ -5,17 +5,17 @@ import { toggleGptSearch } from "../utils/gptSearchSlice";
 import { NETFLIX_LOGO, options, SUPPORTED_LANG } from "../utils/constants";
 import { changeLanguage } from "../utils/configSlice";
 import { useRef } from "react";
-import { addsearchMovies } from "../utils/moviesSlice";
-import { Link } from "react-router-dom";
-import useGenreList from "../hooks/useGenreList";
-import Select from "react-select/base";
+import { addsearchMovies, removesearchMovies } from "../utils/moviesSlice";
+import { Link, useNavigate } from "react-router-dom";
+import useSelectedGenre from "../hooks/useSelectedGenre";
 
 const Header = () => {
   const user = useSelector((store) => store.user);
-  useGenreList();
+ const SearchPageData= useSelector(store=>store.movies.searchMovies)
+  const navigate = useNavigate();
+  const { handleMovieApi,handleShowApi } = useSelectedGenre();
   const movieGenre = useSelector((store) => store.movies.movieGenre);
   const tvGenre = useSelector((store) => store.movies.tvGenre);
-  console.log(movieGenre);
   const movieSearch = useRef(null);
   const showGptPage = useSelector((store) => store.gptSearch.showGptSearch);
   const dispatch = useDispatch();
@@ -36,12 +36,21 @@ const Header = () => {
       options,
     );
     const json = await data.json();
-    console.log(json);
     dispatch(addsearchMovies(json.results));
   };
-
+  if (!movieGenre) return;
   const handleGptSearch = () => {
     dispatch(toggleGptSearch());
+  };
+  const handleMovieGenre = async (e) => {
+    if(SearchPageData)dispatch(removesearchMovies());
+    navigate("/search")
+    await handleMovieApi(e.target.value);
+  };
+  const handleShowGenre = async (e) => {
+    if(SearchPageData)dispatch(removesearchMovies());
+    navigate("/search")
+    await handleShowApi(e.target.value);
   };
 
   const handleDefaultLang = (e) => {
@@ -65,16 +74,26 @@ const Header = () => {
               <Link to="/browse">
                 <span>Home</span>
               </Link>
-              <select className="bg-black hover:cursor-pointer">
+              <select
+                className="bg-black hover:cursor-pointer"
+                onChange={(e) => handleMovieGenre(e)}
+              >
                 <option disabled>Movie Genres</option>
                 {movieGenre.map((each) => (
-                  <option key={each.id}>{each.name}</option>
+                  <option key={each.id} value={each.id}>
+                    {each.name}
+                  </option>
                 ))}
               </select>
-              <select className="bg-black hover:cursor-pointer">
+              <select
+                className="bg-black hover:cursor-pointer"
+                onChange={(e) => handleShowGenre(e)}
+              >
                 <option disabled>Shows Genres</option>
                 {tvGenre.map((each) => (
-                  <option key={each.id}>{each.name}</option>
+                  <option key={each.id} value={each.id}>
+                    {each.name}
+                  </option>
                 ))}
               </select>
             </div>

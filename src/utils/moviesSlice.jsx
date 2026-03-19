@@ -64,6 +64,11 @@ const moviesSlice = createSlice({
     addsearchMovies: (state, action) => {
       state.searchMovies = action.payload;
     },
+
+    removesearchMovies: (state) => {
+      state.searchMovies = null;
+    },
+
     addtvGenre: (state, action) => {
       state.tvGenre = action.payload;
     },
@@ -84,6 +89,7 @@ export const {
   addsearchMovies,
   addtvGenre,
   addmovieGenre,
+  removesearchMovies,
 } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
