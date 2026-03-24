@@ -5,7 +5,6 @@ const moviesSlice = createSlice({
   initialState: {
     Popular: null,
     trailer: null,
-    searchMovies: null,
     TrendingMovies: null,
     TrendingShows: null,
     TopRatedMovies: null,
@@ -61,14 +60,6 @@ const moviesSlice = createSlice({
     addTrailer: (state, action) => {
       state.trailer = action.payload;
     },
-    addsearchMovies: (state, action) => {
-      state.searchMovies = action.payload;
-    },
-
-    removesearchMovies: (state) => {
-      state.searchMovies = null;
-    },
-
     addtvGenre: (state, action) => {
       state.tvGenre = action.payload;
     },

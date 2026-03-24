@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import MovieCard from "./MovieCard";
 import Header from "./Header";
 import Shimmer from "./Shimmer";
+import PagesCount from "./PagesCount";
 
 const SearchMovies = () => {
-  const movies = useSelector((store) => store.movies.searchMovies);
+  const movies = useSelector((store) => store.searchMovies.searchMoviesList);
+  console.log("called Search")
   if (movies == null) return(<Shimmer/>);
   return (
     <>
@@ -20,6 +22,7 @@ const SearchMovies = () => {
               ),
           )}
         </div>
+        <PagesCount/>
       </div>
     </>
   );

@@ -3,7 +3,7 @@ import React from "react";
 const MovieCard = ({ movie }) => {
   return (
     <div>
-      <div className="w-40 bg-gray-700">
+      <div className="w-50 bg-gray-700">
         
           <img
             className="rounded-sm"

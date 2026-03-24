@@ -1,0 +1,5 @@
+1. we cant call any api or any console just after we dispatch some value and if we call api with same value it gets old value because even redux is updated immediately but react gives updated value only after next re-render so better pass fresh values to api function if u want some api just next to dispatch,ref-see pagesCount useState
+
+2. if u want to use some function of custom hook , u have to return it from custom hook and then import it {} from custom hook where ever u want to use
+ CUSTOM HOOKS CANT BE USED INSIDE ANY FUNCTION , ONLY CUSTOM HOOK'S FUNCTION CAN BE USED ,ref-see header-useMovieSearch
+ 

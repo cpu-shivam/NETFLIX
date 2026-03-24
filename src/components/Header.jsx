@@ -2,23 +2,42 @@ import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleGptSearch } from "../utils/gptSearchSlice";
-import { NETFLIX_LOGO, options, SUPPORTED_LANG } from "../utils/constants";
+import { NETFLIX_LOGO, SUPPORTED_LANG } from "../utils/constants";
 import { changeLanguage } from "../utils/configSlice";
 import { useRef } from "react";
-import { addsearchMovies, removesearchMovies } from "../utils/moviesSlice";
 import { Link, useNavigate } from "react-router-dom";
 import useSelectedGenre from "../hooks/useSelectedGenre";
+import useMovieSearch from "../hooks/useMovieSearch";
+
+
+import {
+  addSearchText,
+  addselectedMovieGenre,
+  addselectedShowGenre,
+  removeSearchMoviesList,
+  removeselectedMovieGenre,
+  removeselectedShowGenre,
+  resetSearchText,
+} from "../utils/SearchMoviesSlice";
 
 const Header = () => {
+
+  const isMovieGenre=useSelector(store=>store.searchMovies.selectedMovieGenre)
+  const isShowGenre=useSelector(store=>store.searchMovies.selectedShowGenre)
+  const { handleMovieSearch } = useMovieSearch();
   const user = useSelector((store) => store.user);
- const SearchPageData= useSelector(store=>store.movies.searchMovies)
+  const SearchPageData = useSelector(
+    (store) => store.searchMovies.searchMoviesList,
+  );
   const navigate = useNavigate();
-  const { handleMovieApi,handleShowApi } = useSelectedGenre();
+  const { handleMovieApi, handleShowApi } = useSelectedGenre();
   const movieGenre = useSelector((store) => store.movies.movieGenre);
   const tvGenre = useSelector((store) => store.movies.tvGenre);
   const movieSearch = useRef(null);
   const showGptPage = useSelector((store) => store.gptSearch.showGptSearch);
+  const showSearchText = useSelector((store) => store.searchMovies.searchText);
   const dispatch = useDispatch();
+  const currentPage = 1;
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -28,29 +47,31 @@ const Header = () => {
         // An error happened.
       });
   };
-  const handleMovieSearch = async () => {
-    const data = await fetch(
-      "https://api.themoviedb.org/3/search/multi?query=" +
-        movieSearch.current.value +
-        "&include_adult=false&page=1",
-      options,
-    );
-    const json = await data.json();
-    dispatch(addsearchMovies(json.results));
-  };
+
   if (!movieGenre) return;
   const handleGptSearch = () => {
     dispatch(toggleGptSearch());
   };
   const handleMovieGenre = async (e) => {
-    if(SearchPageData)dispatch(removesearchMovies());
-    navigate("/search")
-    await handleMovieApi(e.target.value);
+    if (SearchPageData) dispatch(removeSearchMoviesList());
+    if (showSearchText) dispatch(resetSearchText());
+    if(isShowGenre)dispatch(removeselectedShowGenre())
+    dispatch(addselectedMovieGenre(e.target.value))
+    navigate("/search");
+    await handleMovieApi(e.target.value, currentPage);
   };
   const handleShowGenre = async (e) => {
-    if(SearchPageData)dispatch(removesearchMovies());
-    navigate("/search")
-    await handleShowApi(e.target.value);
+    if (SearchPageData?.length) dispatch(removeSearchMoviesList());
+    if (showSearchText) dispatch(resetSearchText());
+    if(isMovieGenre)dispatch(removeselectedMovieGenre())
+    dispatch(addselectedShowGenre(e.target.value))
+    navigate("/search");
+    await handleShowApi(e.target.value, currentPage);
+  };
+  const handleButtonClick = async () => {
+    dispatch(addSearchText(movieSearch.current.value));
+    if (SearchPageData?.length) dispatch(removeSearchMoviesList());
+    await handleMovieSearch(movieSearch.current.value, currentPage);
   };
 
   const handleDefaultLang = (e) => {
@@ -74,28 +95,35 @@ const Header = () => {
               <Link to="/browse">
                 <span>Home</span>
               </Link>
-              <select
-                className="bg-black hover:cursor-pointer"
-                onChange={(e) => handleMovieGenre(e)}
-              >
-                <option disabled>Movie Genres</option>
-                {movieGenre.map((each) => (
-                  <option key={each.id} value={each.id}>
-                    {each.name}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="bg-black hover:cursor-pointer"
-                onChange={(e) => handleShowGenre(e)}
-              >
-                <option disabled>Shows Genres</option>
-                {tvGenre.map((each) => (
-                  <option key={each.id} value={each.id}>
-                    {each.name}
-                  </option>
-                ))}
-              </select>
+
+              <div>
+                <span>Movies By: </span>
+                <select
+                  className="bg-black hover:cursor-pointer border rounded-sm"
+                  onChange={(e) => handleMovieGenre(e)}
+                >
+                  <option disabled>Movie Genres</option>
+                  {movieGenre.map((each) => (
+                    <option key={each.id} value={each.id}>
+                      {each.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <span>Shows by: </span>
+                <select
+                  className="bg-black hover:cursor-pointer border rounded-sm"
+                  onChange={(e) => handleShowGenre(e)}
+                >
+                  <option disabled>Shows Genres</option>
+                  {tvGenre.map((each) => (
+                    <option key={each.id} value={each.id}>
+                      {each.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="p-4 mx-4">
               {showGptPage && (
@@ -118,7 +146,7 @@ const Header = () => {
               <Link to="/search">
                 <button
                   className="bg-zinc-800 p-2 rounded-sm text-white text-sm ml-1 px-4"
-                  onClick={handleMovieSearch}
+                  onClick={handleButtonClick}
                 >
                   Search
                 </button>

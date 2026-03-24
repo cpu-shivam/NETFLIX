@@ -1,4 +1,3 @@
-import React from "react";
 import GptSearchBar from "./gptSearchBar";
 import { DEFAULT_BACKGROUND } from "../utils/constants";
 

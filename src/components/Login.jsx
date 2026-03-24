@@ -4,6 +4,7 @@ import validateLogin from "../utils/validateLogin";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
@@ -11,7 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 import { DEFAULT_BACKGROUND } from "../utils/constants";
+import { GoogleAuthProvider } from "firebase/auth";
 const Login = () => {
+  const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [IsToggleLogin, setIsToggleLogin] = useState(false);
@@ -39,14 +42,16 @@ const Login = () => {
             displayName: name.current.value,
             // photoURL: "https://example.com/jane-q-user/profile.jpg",
           })
-          .then(() => {
-            dispatch(addUser({ displayName: user.displayName, email: user.email }));
-            // Profile updated!
-            // ...
-          })
-          .catch((error) => {
-            // An error occurred
-          });
+            .then(() => {
+              dispatch(
+                addUser({ displayName: user.displayName, email: user.email }),
+              );
+              // Profile updated!
+              // ...
+            })
+            .catch((error) => {
+              // An error occurred
+            });
           //console.log(user);
           // ...
         })
@@ -54,7 +59,7 @@ const Login = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           seterrMessage(errorMessage);
-          
+
           // ..
         });
     } else {
@@ -63,12 +68,12 @@ const Login = () => {
         email.current.value,
         password.current.value,
       )
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
 
-        navigate("/Browse");
-        
+          navigate("/Browse");
+
           // ...
         })
         .catch((error) => {
@@ -77,6 +82,29 @@ const Login = () => {
           seterrMessage(errorMessage);
         });
     }
+  };
+
+  const googleSignUp = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
   };
   return (
     <div>
@@ -109,8 +137,9 @@ const Login = () => {
           placeholder="password"
         ></input>
         <div>{errMessage}</div>
+        <button onClick={googleSignUp} className="mt-8 bg-white text-zinc-600 font-semibold p-3 rounded-md hover:bg-white/90" >Sign in Google</button>
         <button
-          className="w-full bg-red-700 mt-10 p-4 rounded-xs"
+          className="w-full bg-red-700 mt-1 p-4 rounded-xs hover:bg-red-700/90"
           onClick={handleSubmit}
         >
           Submit
@@ -124,10 +153,7 @@ const Login = () => {
             : "already registered? sign in"}
         </div>
       </form>
-      <img
-        alt="wallpaper"
-        src={DEFAULT_BACKGROUND}
-      ></img>
+      <img alt="wallpaper" src={DEFAULT_BACKGROUND}></img>
     </div>
   );
 };
