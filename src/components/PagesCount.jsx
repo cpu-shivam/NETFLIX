@@ -40,7 +40,7 @@ const PagesCount = () => {
    await handleMovieSearch(searchText, page);
   };
   return (
-    <div className="my-10 py-4 text-white text-md w-3/12 mx-auto border-gray-200 border-2 flex justify-around">
+    <div className="my-5 md:my-10 py-2 md:py-4 text-white text-xs md:text-[16px] w-6/12 md:w-3/12 mx-auto border-gray-200 border md:border-2 flex justify-around">
       {currentPage != 1 && <button onClick={handlePrevPage}>Prev</button>}
       <span>
         Page {currentPage} of {totalPages}

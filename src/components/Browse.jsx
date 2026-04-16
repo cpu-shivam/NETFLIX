@@ -11,6 +11,7 @@ import useTopRated from "../hooks/useTopRated";
 
 import { useSelector } from "react-redux";
 import useGenreList from "../hooks/useGenreList";
+import Footer from "./Footer";
 
 
 const Browse = () => {
@@ -37,8 +38,7 @@ const Browse = () => {
       )} */}
           <MainContainer />
           <SecondaryContainer />
-   
-
+          <Footer/>
     </div>
   );
 };

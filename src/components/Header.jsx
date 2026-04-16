@@ -9,7 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useSelectedGenre from "../hooks/useSelectedGenre";
 import useMovieSearch from "../hooks/useMovieSearch";
 
-
 import {
   addSearchText,
   addselectedMovieGenre,
@@ -21,9 +20,12 @@ import {
 } from "../utils/SearchMoviesSlice";
 
 const Header = () => {
-
-  const isMovieGenre=useSelector(store=>store.searchMovies.selectedMovieGenre)
-  const isShowGenre=useSelector(store=>store.searchMovies.selectedShowGenre)
+  const isMovieGenre = useSelector(
+    (store) => store.searchMovies.selectedMovieGenre,
+  );
+  const isShowGenre = useSelector(
+    (store) => store.searchMovies.selectedShowGenre,
+  );
   const { handleMovieSearch } = useMovieSearch();
   const user = useSelector((store) => store.user);
   const SearchPageData = useSelector(
@@ -55,16 +57,16 @@ const Header = () => {
   const handleMovieGenre = async (e) => {
     if (SearchPageData) dispatch(removeSearchMoviesList());
     if (showSearchText) dispatch(resetSearchText());
-    if(isShowGenre)dispatch(removeselectedShowGenre())
-    dispatch(addselectedMovieGenre(e.target.value))
+    if (isShowGenre) dispatch(removeselectedShowGenre());
+    dispatch(addselectedMovieGenre(e.target.value));
     navigate("/search");
     await handleMovieApi(e.target.value, currentPage);
   };
   const handleShowGenre = async (e) => {
     if (SearchPageData?.length) dispatch(removeSearchMoviesList());
     if (showSearchText) dispatch(resetSearchText());
-    if(isMovieGenre)dispatch(removeselectedMovieGenre())
-    dispatch(addselectedShowGenre(e.target.value))
+    if (isMovieGenre) dispatch(removeselectedMovieGenre());
+    dispatch(addselectedShowGenre(e.target.value));
     navigate("/search");
     await handleShowApi(e.target.value, currentPage);
   };
@@ -81,28 +83,28 @@ const Header = () => {
     <div
       className={
         !user
-          ? "absolute bg-linear-to-b from-black flex justify-between"
-          : "  flex  z-20 bg-black fixed"
+          ? "absolute bg-linear-to-b from-black flex justify-between z-10"
+          : "flex z-40 bg-black fixed"
       }
     >
-      <div className="w-2/12 ml-10 ">
-        <img className="px-4  " alt="logo" src={NETFLIX_LOGO}></img>
+      <div className={!user ? "w-3/12 md:w-2/12 md:ml-3 px-3 md:px-5" : "w-[11%] ml-1 mt-2 mr-2   md:w-1/12 md:ml-3 md:mt-3 md:mr-4"}>
+        <img className="" alt="logo" src={NETFLIX_LOGO}></img>
       </div>
       {user && (
         <>
-          <div className=" flex justify-between w-full  items-center">
-            <div className="text-white flex gap-x-10">
+          <div className=" flex justify-between w-full  items-center text-[8px] md:text-[14px]">
+            <div className="text-white flex gap-x-2 md:gap-x-10 items-center">
               <Link to="/browse">
-                <span>Home</span>
+                <span className="hover:underline ">Home</span>
               </Link>
 
-              <div>
-                <span>Movies By: </span>
+              <div className=" pl-1 outline-1 rounded-sm">
+                <span>Movies  </span>
                 <select
-                  className="bg-black hover:cursor-pointer border rounded-sm"
+                  className="mx-1 md:mx-2 bg-black hover:cursor-pointer rounded-sm w-3"
                   onChange={(e) => handleMovieGenre(e)}
                 >
-                  <option disabled>Movie Genres</option>
+                  <option className=""></option>
                   {movieGenre.map((each) => (
                     <option key={each.id} value={each.id}>
                       {each.name}
@@ -110,13 +112,13 @@ const Header = () => {
                   ))}
                 </select>
               </div>
-              <div>
-                <span>Shows by: </span>
+              <div className=" pl-1 outline-1 rounded-sm">
+                <span>Shows  </span>
                 <select
-                  className="bg-black hover:cursor-pointer border rounded-sm"
+                  className="mx-1 md:mx-2 bg-black hover:cursor-pointer rounded-sm w-3"
                   onChange={(e) => handleShowGenre(e)}
                 >
-                  <option disabled>Shows Genres</option>
+                  <option className=""></option>
                   {tvGenre.map((each) => (
                     <option key={each.id} value={each.id}>
                       {each.name}
@@ -125,7 +127,7 @@ const Header = () => {
                 </select>
               </div>
             </div>
-            <div className="p-4 mx-4">
+            <div className="p-1 md:p-4 md:mx-4">
               {showGptPage && (
                 <select
                   className="bg-black text-white px-3 py-2 rounded-lg"
@@ -141,25 +143,20 @@ const Header = () => {
               <input
                 ref={movieSearch}
                 placeholder="search for movies and shows"
-                className="p-1 pl-2 w-75 text-white bg-zinc-900   rounded-sm"
+                className="p-1 pl-2 w-10 md:w-75 text-white bg-zinc-900 rounded-sm"
               ></input>
               <Link to="/search">
                 <button
-                  className="bg-zinc-800 p-2 rounded-sm text-white text-sm ml-1 px-4"
+                  className="bg-zinc-800 p-1 md:p-2 px-2 md:px-4 rounded-sm text-white ml-1 mr-1 "
                   onClick={handleButtonClick}
                 >
                   Search
                 </button>
               </Link>
-              <button
-                className="text-white bg-purple-800 mx-4 p-2 rounded-lg hover:bg-purple-800/80"
-                onClick={handleGptSearch}
-              >
-                {showGptPage ? "Home Page" : "Gpt Search"}
-              </button>
+              
               <button
                 onClick={handleSignOut}
-                className="bg-red-800 p-2 rounded-md text-white hover:bg-red-800/80 "
+                className="bg-red-800 p-1 px-2  md:p-2 rounded-sm text-white hover:bg-red-800/80 "
               >
                 Sign Out
               </button>

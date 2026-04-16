@@ -5,8 +5,8 @@ const SecondaryContainer = () => {
   const movies = useSelector((store) => store.movies);
   if (!movies) return;
   return (
-    <div className="pl-10 bg-gray-950">
-      <div className="-mt-55">
+    <div className="pl-10 bg-zinc-950">
+      <div className="-mt-5 md:-mt-55">
         <MovieBars title={"Popular"} movies={movies.Popular} />
         <MovieBars title={"Trending Movies"} movies={movies.TrendingMovies} />
         <MovieBars title={"Trending Shows"} movies={movies.TrendingShows} />

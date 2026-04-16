@@ -11,7 +11,7 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
-import { DEFAULT_BACKGROUND } from "../utils/constants";
+import { DEFAULT_BACKGROUND, GOOGLE_LOGO } from "../utils/constants";
 import { GoogleAuthProvider } from "firebase/auth";
 const Login = () => {
   const provider = new GoogleAuthProvider();
@@ -111,41 +111,50 @@ const Login = () => {
       <Header />
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="bg-black/80 w-3/12 mt-40 mx-auto right-0 left-0 text-white p-10 rounded-sm absolute "
+        className="bg-black/80 w-6/12 md:w-3/12 mt-60 md:mt-35 mx-auto right-0 left-0 text-white p-2 md:p-10 rounded-sm absolute z-10 pb-3 md:pb-7 text-[10px] md:text-[16px]"
       >
-        <h1 className="text-3xl font-bold pb-5">
+        <h1 className="text-xs md:text-3xl font-bold pb-2 md:pb-5">
           {IsToggleLogin ? "Sign in" : "Sign up"}
         </h1>
         {!IsToggleLogin && (
           <input
             ref={name}
-            className="w-full bg-gray-700 my-5 p-3 rounded-xs "
+            className="w-full bg-gray-700 my-2 p-1 md:my-4 md:p-3 rounded-xs "
             type="name"
             placeholder="full name"
           ></input>
         )}
         <input
           ref={email}
-          className="w-full bg-gray-700 my-4 p-3 rounded-xs "
+          className="w-full bg-gray-700 my-2 p-1 md:my-4 md:p-3 rounded-xs "
           type="email"
           placeholder="email address"
         ></input>
         <input
           ref={password}
-          className="w-full bg-gray-700  my-4 p-3 rounded-xs "
+          className="w-full bg-gray-700 my-2 p-1 md:my-4 md:p-3 rounded-xs "
           type="password"
           placeholder="password"
         ></input>
         <div>{errMessage}</div>
-        <button onClick={googleSignUp} className="mt-8 bg-white text-zinc-600 font-semibold p-3 rounded-md hover:bg-white/90" >Sign in Google</button>
         <button
-          className="w-full bg-red-700 mt-1 p-4 rounded-xs hover:bg-red-700/90"
+          className="w-full bg-red-700 mt-3 p-1 md:p-4 rounded-xs hover:bg-red-700/90"
           onClick={handleSubmit}
         >
           Submit
         </button>
+        <button
+          onClick={googleSignUp}
+          className="mt-1  w-full bg-white text-zinc-600 flex font-semibold p-1 md:p-3 rounded-xs  hover:bg-white/90"
+        >
+          <img
+            className="mr-1 w-4 md:w-7"
+            src={GOOGLE_LOGO}
+          ></img>
+          Continue with Google
+        </button>
         <div
-          className="pt-6 text-center cursor-pointer"
+          className="pt-2 md:pt-6 text-center cursor-pointer hover:underline"
           onClick={() => setIsToggleLogin(!IsToggleLogin)}
         >
           {IsToggleLogin
@@ -153,7 +162,7 @@ const Login = () => {
             : "already registered? sign in"}
         </div>
       </form>
-      <img alt="wallpaper" src={DEFAULT_BACKGROUND}></img>
+      <img className="fixed h-full w-full object-cover " alt="wallpaper" src={DEFAULT_BACKGROUND}></img>
     </div>
   );
 };
